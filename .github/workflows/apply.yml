@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Apply
     env:
-      GITHUB_OWNER: stiench
+      TF_VAR_github_owner: stiench
       GITHUB_TOKEN: ${{ secrets.TERRAFORM }}
     steps:
       - name: Checkout
