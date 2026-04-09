@@ -18,13 +18,12 @@ resource "github_repository" "lkt-website" {
 resource "github_branch_protection" "lkt-website" {
   repository_id  = github_repository.lkt-website.name
   pattern        = "main"
-  enforce_admins = true
+  enforce_admins = false
 
   required_pull_request_reviews {
     required_approving_review_count = 1
     require_code_owner_reviews      = true
     require_last_push_approval      = true
-    pull_request_bypassers          = ["/stiench"]
   }
 }
 
@@ -47,7 +46,7 @@ resource "github_repository" "terraform" {
 resource "github_branch_protection" "terraform" {
   repository_id  = github_repository.terraform.name
   pattern        = "main"
-  enforce_admins = true
+  enforce_admins = false
 
   required_status_checks {
     strict   = false
@@ -59,7 +58,6 @@ resource "github_branch_protection" "terraform" {
   required_pull_request_reviews {
     required_approving_review_count = 1
     require_code_owner_reviews      = true
-    pull_request_bypassers          = ["/stiench"]
   }
 }
 
@@ -69,7 +67,7 @@ resource "github_branch_protection" "github_branch_protection" {
 
   repository_id  = each.key
   pattern        = "main"
-  enforce_admins = true
+  enforce_admins = false
 
   required_pull_request_reviews {
     required_approving_review_count = 0
