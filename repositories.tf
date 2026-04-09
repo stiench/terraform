@@ -9,25 +9,22 @@ resource "github_repository" "lkt-website" {
   has_wiki = true
   has_projects = true
   has_issues = true
-  visibility = "private"
+  visibility = "public"
   squash_merge_commit_title = "PR_TITLE"
   squash_merge_commit_message = "BLANK"
   homepage_url = "https://stien.ch/lkt/"
 }
 
-resource "github_branch_protection_v3" "lkt-website" {
-  repository     = "lkt-website"
-  branch         = "main"
+resource "github_branch_protection" "lkt-website" {
+  repository_id  = github_repository.lkt-website.name
+  pattern        = "main"
   enforce_admins = true
 
-  required_pull_request_reviews  {
+  required_pull_request_reviews {
     required_approving_review_count = 1
-    require_code_owner_reviews = true
-    require_last_push_approval = true
-    
-    bypass_pull_request_allowances {
-      users = [ "stiench" ]
-    }
+    require_code_owner_reviews      = true
+    require_last_push_approval      = true
+    pull_request_bypassers          = ["/stiench"]
   }
 }
 
@@ -42,41 +39,39 @@ resource "github_repository" "terraform" {
   has_wiki = false
   has_projects = false
   has_issues = true
-  visibility = "private"
+  visibility = "public"
   squash_merge_commit_title = "PR_TITLE"
   squash_merge_commit_message = "BLANK"
 }
 
-resource "github_branch_protection_v3" "terraform" {
-  repository     = "terraform"
-  branch         = "main"
+resource "github_branch_protection" "terraform" {
+  repository_id  = github_repository.terraform.name
+  pattern        = "main"
   enforce_admins = true
 
   required_status_checks {
     strict   = false
-    checks = distinct([
+    contexts = distinct([
       "Plan"
     ])
   }
 
-  required_pull_request_reviews  {
+  required_pull_request_reviews {
     required_approving_review_count = 1
-    require_code_owner_reviews = true
-    bypass_pull_request_allowances {
-      users = [ "stiench" ]
-    }
+    require_code_owner_reviews      = true
+    pull_request_bypassers          = ["/stiench"]
   }
 }
 
 # Default branch protection
-resource "github_branch_protection_v3" "github_branch_protection_v3" {
+resource "github_branch_protection" "github_branch_protection" {
   for_each = toset([])
 
-  repository     = each.key
-  branch         = "main"
+  repository_id  = each.key
+  pattern        = "main"
   enforce_admins = true
 
-  required_pull_request_reviews  {
+  required_pull_request_reviews {
     required_approving_review_count = 0
   }
 }
