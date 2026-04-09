@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Apply
     env:
-      GITHUB_OWNER: quadrum-solutions
+      GITHUB_OWNER: stiench
       GITHUB_TOKEN: ${{ secrets.TERRAFORM }}
     steps:
       - name: Checkout
