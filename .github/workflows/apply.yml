@@ -1,0 +1,28 @@
+name: Apply
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allow to manually trigger
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    name: Apply
+    env:
+      GITHUB_OWNER: quadrum-solutions
+      GITHUB_TOKEN: ${{ secrets.TERRAFORM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: terraform apply
+        uses: dflook/terraform-apply@5489b988934a50bf1489d5b7c5253b46520a7dca # v2.2
+        with:
+          path: .
+          auto_approve: true

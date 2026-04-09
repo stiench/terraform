@@ -1,0 +1,23 @@
+name: Plan
+
+on: [pull_request]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    name: Plan
+    env:
+      GITHUB_OWNER: quadrum-solutions
+      GITHUB_TOKEN: ${{ secrets.TERRAFORM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: terraform plan
+        uses: dflook/terraform-plan@7878bff63e2099cdc9be9a6f33cbbbf687f8f0fe # v2.2
+        with:
+          path: .
